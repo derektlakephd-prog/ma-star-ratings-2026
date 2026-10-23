@@ -1,0 +1,8 @@
+# Python 3.13.2
+pandas==2.2.3
+numpy==2.2.4
+matplotlib==3.10.1
+# Reads the CMS ratebook workbook
+openpyxl==3.1.5
+# Opens and runs the notebooks
+jupyterlab

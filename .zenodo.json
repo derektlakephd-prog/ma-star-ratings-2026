@@ -1,0 +1,29 @@
+{
+  "title": "Code and data for: Characteristics and Financial Implications of Measures Removed From Medicare Advantage Star Ratings",
+  "upload_type": "software",
+  "description": "Analytic code, derived data, and documentation for Lake DT, Civelek Y, Bond AM, Khullar D. Characteristics and financial implications of measures removed from Medicare Advantage star ratings. JAMA Netw Open. 2026;9(10):e2640240. doi:10.1001/jamanetworkopen.2026.40240. Please cite the article. Code is licensed under Apache-2.0; derived data and documentation under CC BY 4.0; CMS input files are public domain.",
+  "creators": [
+    {
+      "name": "Lake, Derek T.",
+      "orcid": "0000-0002-6250-8737"
+    }
+  ],
+  "access_right": "open",
+  "license": "apache-2.0",
+  "related_identifiers": [
+    {
+      "identifier": "https://doi.org/10.1001/jamanetworkopen.2026.40240",
+      "relation": "isSupplementTo",
+      "resource_type": "publication-article"
+    }
+  ],
+  "keywords": [
+    "Medicare Advantage",
+    "Star Ratings",
+    "quality bonus payments",
+    "quality measurement",
+    "health policy"
+  ],
+  "language": "eng",
+  "version": "1.0.0"
+}

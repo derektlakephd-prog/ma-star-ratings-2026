@@ -1,0 +1,14 @@
+Medicare Advantage Star Ratings: Measure Removal Analysis
+Copyright 2026 Derek T. Lake
+
+This software was written by Derek T. Lake to produce the results reported in
+the following article. Any publication, report, or product that uses this code
+or its outputs should cite the article:
+
+  Lake DT, Civelek Y, Bond AM, Khullar D. Characteristics and financial
+  implications of measures removed from Medicare Advantage star ratings.
+  JAMA Netw Open. 2026;9(10):e2640240.
+  doi:10.1001/jamanetworkopen.2026.40240
+
+Input data are public files released by the Centers for Medicare & Medicaid
+Services (CMS). CMS did not sponsor, review, or endorse this work.

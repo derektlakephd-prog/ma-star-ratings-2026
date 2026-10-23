@@ -1,0 +1,29 @@
+Quantity,Value
+Contracts,425.0
+Enrollees,29007964.0
+Median enrollment,15723.0
+Enrollment 25th percentile,6394.0
+Enrollment 75th percentile,50012.0
+HMO contracts,293.0
+PPO contracts,127.0
+Other plan type contracts,5.0
+Removed measures topped out,5.0
+Retained measures topped out,0.0
+"Rating declines, %",35.05882352941177
+"Rating unchanged, %",62.588235294117645
+"Rating increases, %",2.3529411764705883
+Baseline mean rating,3.5776470588235294
+Projected mean rating,3.4129411764705884
+Baseline median rating,3.5
+Baseline rating 25th percentile,3.0
+Baseline rating 75th percentile,4.0
+Projected median rating,3.5
+Projected rating 25th percentile,3.0
+Projected rating 75th percentile,4.0
+Contracts losing QBP eligibility,33.0
+Enrollees in contracts losing QBP eligibility,2587448.0
+Contracts gaining QBP eligibility,6.0
+Enrollees in contracts gaining QBP eligibility,239560.0
+"Baseline QBP pool, $ millions",15057.376737839999
+"Net QBP change, $ millions",-2093.410772159998
+"Net QBP change, % of baseline pool",-13.902891643131595

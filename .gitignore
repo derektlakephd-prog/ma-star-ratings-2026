@@ -1,0 +1,8 @@
+.DS_Store
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.venv/
+# Enrollment files are stored compressed; ignore copies unzipped locally
+data/raw/SCC_Enrollment_MA_2026_05.csv
+data/raw/CPSC_Enrollment_Info_2026_05.csv

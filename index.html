@@ -1,0 +1,953 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G3X5N10GMB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-G3X5N10GMB');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MA Star Ratings Measure Removal</title>
+<meta name="description" content="Code, data, and a contract explorer for a JAMA Network Open Research Letter on the 11 measures removed from the Medicare Advantage Star Ratings and their effect on quality bonus payments.">
+<meta name="author" content="Derek T. Lake">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Measures Removed From Medicare Advantage Star Ratings">
+<meta property="og:description" content="Five of 13 removed components were topped out. Removing all 13 reduces estimated annual quality bonus payments by a net $2.09 billion. Explore every contract.">
+<meta property="og:url" content="https://derektlakephd-prog.github.io/ma-star-ratings-2026/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230B4A6F'/%3E%3Cpath d='M16 6l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L6 13.2l7.1-.6z' fill='%23E8961E'/%3E%3C/svg%3E">
+<style>
+@font-face { font-family: "Public Sans"; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url("site/fonts/public-sans-latin-wght-normal.woff2") format("woff2"); }
+@font-face { font-family: "Public Sans"; font-style: italic; font-weight: 100 900; font-display: swap;
+  src: url("site/fonts/public-sans-latin-wght-italic.woff2") format("woff2"); }
+
+:root {
+  color-scheme: light;
+  --bg: #f1f4f6;
+  --surface: #ffffff;
+  --ink: #102331;
+  --ink-2: #44586a;
+  --ink-3: #596c7c;
+  --rule: #d7dfe5;
+  --rule-soft: #e7ecf0;
+  --brand: #0b4a6f;
+  --brand-ink: #ffffff;
+  --brand-soft: #e3edf3;
+  --amber: #e8961e;
+  --link: #0b5a87;
+  --before: #1a6496;
+  --after: #e0891a;
+  --band: rgba(26, 100, 150, 0.06);
+  --focus: #0b5a87;
+  --lose: #9a3b12;
+  --gain: #1f6b3a;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0d1820;
+    --surface: #13212b;
+    --ink: #e6edf2;
+    --ink-2: #b5c3ce;
+    --ink-3: #8a9cab;
+    --rule: #2a3c49;
+    --rule-soft: #1d2e3a;
+    --brand: #0a3a57;
+    --brand-ink: #f2f6f9;
+    --brand-soft: #1a3344;
+    --link: #7cbbe6;
+    --before: #3f8fc6;
+    --after: #c27815;
+    --band: rgba(63, 143, 198, 0.10);
+    --lose: #f0a07a;
+    --gain: #8fd3a5;
+    --focus: #f0a434;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0d1820; --surface: #13212b; --ink: #e6edf2; --ink-2: #b5c3ce; --ink-3: #8a9cab;
+  --rule: #2a3c49; --rule-soft: #1d2e3a; --brand: #0a3a57; --brand-ink: #f2f6f9; --brand-soft: #1a3344;
+  --link: #7cbbe6; --before: #3f8fc6; --after: #c27815; --band: rgba(63, 143, 198, 0.10);
+  --lose: #f0a07a; --gain: #8fd3a5; --focus: #f0a434;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased;
+}
+a { color: var(--link); text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 3px; }
+.top :focus-visible { outline-color: #f0a434; }
+h1, h2, h3 { line-height: 1.2; margin: 0; }
+p { margin: 0 0 1em; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+.num { font-variant-numeric: tabular-nums; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Header and hero */
+.top { background: var(--brand); color: var(--brand-ink); }
+.nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 18px; padding-bottom: 18px; }
+.nav .site { font-weight: 650; font-size: 15px; color: var(--brand-ink); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.nav .site svg { flex: none; }
+.nav ul { list-style: none; display: flex; gap: 22px; margin: 0; padding: 0; font-size: 15px; }
+.nav ul a { color: var(--brand-ink); text-decoration: none; opacity: .88; }
+.nav ul a:hover { opacity: 1; text-decoration: underline; }
+.hero { padding-top: 56px; padding-bottom: 64px; }
+.hero h1 { font-size: clamp(30px, 4.4vw, 50px); font-weight: 680; letter-spacing: -0.018em; max-width: 21ch; }
+.hero .lede { margin-top: 22px; font-size: 18px; max-width: 62ch; color: color-mix(in srgb, var(--brand-ink) 86%, transparent); }
+.hero .cite { margin-top: 14px; font-size: 15px; color: color-mix(in srgb, var(--brand-ink) 76%, transparent); }
+.hero .cite i { font-style: italic; }
+.byline { margin-top: 18px; font-size: 15px; line-height: 1.45; color: color-mix(in srgb, var(--brand-ink) 82%, transparent); }
+.byline a { color: var(--brand-ink); font-weight: 650; text-decoration: none; }
+.byline a:hover { text-decoration: underline; }
+.actions { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 12px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 6px; font-weight: 600; font-size: 15px; text-decoration: none; border: 1px solid transparent; cursor: pointer; font-family: inherit; }
+.btn-primary { background: var(--amber); color: #1b1203; }
+.btn-primary:hover { background: #f0a434; text-decoration: none; }
+.btn-ghost { color: var(--brand-ink); border-color: color-mix(in srgb, var(--brand-ink) 45%, transparent); }
+.btn-ghost:hover { border-color: var(--brand-ink); text-decoration: none; }
+
+/* Sections */
+section { padding: 64px 0; }
+section + section { border-top: 1px solid var(--rule); }
+.section-head { max-width: 70ch; margin-bottom: 28px; }
+.section-head h2 { font-size: 28px; font-weight: 660; letter-spacing: -0.01em; }
+.section-head p { margin-top: 10px; color: var(--ink-2); }
+
+/* Findings */
+.findings { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 470px); gap: 56px; align-items: start; }
+.findings .prose { max-width: 64ch; font-size: 17px; }
+.keys { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; margin: 30px 0 0; border-top: 1px solid var(--rule); }
+.keys div { padding: 18px 18px 18px 0; border-bottom: 1px solid var(--rule); }
+.keys div:nth-child(odd) { border-right: 1px solid var(--rule); }
+.keys div:nth-child(even) { padding-left: 18px; }
+.keys dt { font-size: 32px; font-weight: 650; letter-spacing: -0.01em; color: var(--ink); line-height: 1.1; }
+.keys dd { margin: 6px 0 0; font-size: 14px; color: var(--ink-2); }
+figure { margin: 0; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 16px; }
+figure img { display: block; width: 100%; height: auto; border-radius: 2px; background: #fff; }
+figcaption { margin-top: 12px; font-size: 13.5px; color: var(--ink-2); line-height: 1.5; }
+
+/* Explorer */
+.filters { display: flex; flex-wrap: wrap; gap: 12px 14px; align-items: end; padding: 16px; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; }
+.field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.field label, .field .label { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.field input[type="search"], .field select {
+  font: inherit; font-size: 15px; color: var(--ink); background: var(--bg); border: 1px solid var(--rule);
+  border-radius: 6px; padding: 8px 10px; min-height: 40px; }
+.field.grow { flex: 1 1 220px; }
+.field.parent { flex: 1 1 260px; max-width: 360px; }
+.field select { max-width: 100%; }
+.check { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink); min-height: 40px; }
+.check input { width: 18px; height: 18px; accent-color: var(--brand); }
+.btn-quiet { background: transparent; color: var(--link); border-color: var(--rule); min-height: 40px; padding: 8px 14px; font-size: 14px; }
+.btn-quiet:hover { border-color: var(--link); }
+.btn-solid { background: var(--brand); color: #fff; min-height: 40px; padding: 8px 14px; font-size: 14px; }
+.btn-solid:hover { filter: brightness(1.15); }
+.filter-actions { display: flex; gap: 10px; margin-left: auto; }
+
+.compare-wrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 20px; margin-top: 20px; }
+.card { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 18px 20px; min-width: 0; }
+.card h3 { font-size: 16px; font-weight: 650; }
+.card .sub { font-size: 13.5px; color: var(--ink-3); margin-top: 4px; }
+table.compare { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 14.5px; }
+table.compare th, table.compare td { padding: 8px 0; border-bottom: 1px solid var(--rule-soft); text-align: right; vertical-align: top; }
+table.compare th:first-child, table.compare td:first-child { text-align: left; color: var(--ink-2); font-weight: 500; padding-right: 12px; }
+table.compare thead th { font-size: 13px; color: var(--ink-2); font-weight: 600; border-bottom: 1px solid var(--rule); }
+table.compare td + td, table.compare th + th { padding-left: 14px; }
+table.compare tbody tr:last-child td, table.compare tbody tr:last-child th { border-bottom: 0; }
+.note { font-size: 13px; color: var(--ink-3); margin-top: 10px; }
+
+.legend { display: flex; gap: 18px; font-size: 13.5px; color: var(--ink-2); margin-top: 8px; flex-wrap: wrap; }
+.legend span { display: inline-flex; align-items: center; gap: 7px; }
+.legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.panels { display: grid; grid-template-columns: 1fr; gap: 14px; margin-top: 10px; }
+.panel { position: relative; }
+.panel h4 { margin: 0 0 4px; font-size: 14px; font-weight: 600; color: var(--ink); }
+.panel svg { display: block; width: 100%; height: auto; overflow: visible; }
+.panel .axis text { fill: var(--ink-3); font-size: 11px; font-family: inherit; }
+.panel .grid line { stroke: var(--rule-soft); stroke-width: 1; }
+.panel .baseline { stroke: var(--rule); stroke-width: 1; }
+.panel .bar-before { fill: var(--before); }
+.panel .bar-after { fill: var(--after); }
+.panel .hit { fill: transparent; cursor: default; }
+.panel .col:hover .hit { fill: var(--rule-soft); fill-opacity: .55; }
+.panel .band { fill: var(--band); }
+.panel .band-label { fill: var(--ink-2); font-size: 11px; font-weight: 600; }
+.empty { padding: 26px 0; color: var(--ink-2); font-size: 14.5px; }
+.tooltip { position: fixed; z-index: 20; pointer-events: none; background: var(--surface); color: var(--ink); border: 1px solid var(--rule);
+  border-radius: 6px; padding: 9px 11px; font-size: 13px; box-shadow: 0 6px 20px rgba(10, 30, 45, .16); min-width: 170px; opacity: 0; transition: opacity .08s; }
+.tooltip.on { opacity: 1; }
+.tooltip .t-head { font-weight: 650; margin-bottom: 4px; }
+.tooltip .t-row { display: flex; align-items: center; gap: 8px; }
+.tooltip .t-row b { font-variant-numeric: tabular-nums; }
+.tooltip .t-row span { color: var(--ink-2); }
+.tooltip .t-key { width: 12px; height: 3px; border-radius: 2px; display: inline-block; }
+
+.results-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; margin-top: 28px; margin-bottom: 10px; }
+.results-bar .count { font-size: 14.5px; color: var(--ink-2); }
+.table-scroll { overflow-x: auto; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; }
+table.contracts { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 900px; }
+table.contracts th, table.contracts td { padding: 10px 12px; border-bottom: 1px solid var(--rule-soft); text-align: left; vertical-align: top; }
+table.contracts thead th { position: sticky; top: 0; background: var(--surface); border-bottom: 1px solid var(--rule); font-size: 13px; font-weight: 600; color: var(--ink-2); white-space: nowrap; }
+table.contracts th.r, table.contracts td.r { text-align: right; }
+table.contracts td.r { font-variant-numeric: tabular-nums; }
+.sort { background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; display: inline-flex; gap: 4px; align-items: center; }
+.sort .dir { width: 10px; display: inline-block; color: var(--ink-3); }
+.row-toggle { background: none; border: 0; padding: 0; font: inherit; font-weight: 650; color: var(--link); cursor: pointer; text-align: left; display: inline-flex; gap: 6px; align-items: center; }
+.row-toggle .chev { display: inline-block; width: 8px; transition: transform .12s; color: var(--ink-3); }
+.row-toggle[aria-expanded="true"] .chev { transform: rotate(90deg); }
+tr.is-open > td { background: var(--brand-soft); }
+td .muted { color: var(--ink-3); }
+.pname { max-width: 260px; }
+.pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12.5px; font-weight: 600; border: 1px solid var(--rule); white-space: nowrap; }
+.pill.lose { color: var(--lose); border-color: color-mix(in srgb, var(--lose) 40%, transparent); }
+.pill.gain { color: var(--gain); border-color: color-mix(in srgb, var(--gain) 40%, transparent); }
+.pill.excluded { color: var(--ink-3); }
+.delta-down { color: var(--lose); }
+.delta-up { color: var(--gain); }
+tr.detail > td { background: var(--brand-soft); padding: 4px 16px 20px; }
+.detail-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.25fr); gap: 22px; }
+.detail-grid h5 { margin: 12px 0 6px; font-size: 13px; font-weight: 650; color: var(--ink); }
+.detail-grid dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; font-size: 13.5px; }
+.detail-grid dt { color: var(--ink-2); }
+.detail-grid dd { margin: 0; }
+table.mini { border-collapse: collapse; font-size: 13.5px; width: 100%; }
+table.mini th, table.mini td { padding: 3px 8px 3px 0; text-align: right; border: 0; background: none; font-variant-numeric: tabular-nums; }
+table.mini th:first-child, table.mini td:first-child { text-align: left; color: var(--ink-2); font-weight: 500; }
+table.mini thead th { font-size: 12.5px; color: var(--ink-3); font-weight: 600; }
+.stars-list { list-style: none; margin: 0; padding: 0; font-size: 13px; display: grid; gap: 2px; }
+.stars-list li { display: grid; grid-template-columns: 36px 1fr auto; gap: 8px; }
+.stars-list .code { color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.stars-list .s { font-variant-numeric: tabular-nums; font-weight: 600; }
+.pager { display: flex; gap: 8px; align-items: center; justify-content: flex-end; margin-top: 12px; font-size: 14px; color: var(--ink-2); }
+.pager button[disabled] { opacity: .45; cursor: default; }
+
+/* About */
+.about { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; }
+.about h3 { font-size: 18px; font-weight: 650; margin-bottom: 12px; }
+.about p, .about li { font-size: 15px; color: var(--ink); }
+.about ul { padding-left: 18px; margin: 0 0 1em; }
+.about li { margin-bottom: 8px; }
+.about code { font-size: 13.5px; background: var(--rule-soft); padding: 1px 5px; border-radius: 4px; }
+.citebox { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px; font-size: 14px; margin-bottom: 12px; }
+footer { border-top: 1px solid var(--rule); padding: 28px 0 44px; font-size: 13.5px; color: var(--ink-2); }
+footer p { max-width: 90ch; }
+
+@media (max-width: 960px) {
+  .findings { grid-template-columns: 1fr; gap: 36px; }
+  .findings figure { max-width: 520px; }
+  .compare-wrap { grid-template-columns: 1fr; }
+  .about { grid-template-columns: 1fr; gap: 28px; }
+  .detail-grid { grid-template-columns: 1fr; gap: 6px; }
+}
+@media (max-width: 640px) {
+  .wrap { padding: 0 16px; }
+  .nav ul { gap: 14px; font-size: 14px; }
+  .nav ul li.optional { display: none; }
+  .hero { padding-top: 36px; padding-bottom: 44px; }
+  section { padding: 44px 0; }
+  .keys dt { font-size: 26px; }
+  .field.parent { max-width: none; }
+  .filter-actions { margin-left: 0; width: 100%; }
+}
+@media print {
+  .top, .filters, .pager, .filter-actions, .actions { display: none; }
+  body { background: #fff; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap nav">
+    <a class="site" href="#">
+      <svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 4l3.3 7.5 8.1.7-6.1 5.4 1.8 8-7.1-4.2-7.1 4.2 1.8-8-6.1-5.4 8.1-.7z" fill="#E8961E"/></svg>
+      Star Ratings measure removal
+    </a>
+    <nav aria-label="Sections">
+      <ul>
+        <li class="optional"><a href="#findings">Findings</a></li>
+        <li><a href="#explorer">Explorer</a></li>
+        <li class="optional"><a href="#about">About</a></li>
+        <li><a href="https://github.com/derektlakephd-prog/ma-star-ratings-2026">GitHub</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="wrap hero">
+    <h1>Characteristics and Financial Implications of Measures Removed From Medicare Advantage Star Ratings</h1>
+    <p class="lede">A Research Letter on the 11 quality measures that the Centers for Medicare &amp; Medicaid Services (CMS) removed from the Medicare Advantage (MA) Star Ratings in April 2026, asking how many were topped out and how their removal changes contract ratings and quality bonus payments.</p>
+    <p class="cite">Lake DT, Civelek Y, Bond AM, Khullar D. <i>JAMA Netw Open</i>. 2026;9(10):e2640240.</p>
+    <p class="byline"><a href="#author">Derek T. Lake, PhD</a><br>Associate Staff, Center for Value-Based Care Research, Cleveland Clinic</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="https://doi.org/10.1001/jamanetworkopen.2026.40240">Read the article</a>
+      <a class="btn btn-ghost" href="https://github.com/derektlakephd-prog/ma-star-ratings-2026">Get the code and data</a>
+      <a class="btn btn-ghost" href="#explorer">Explore contracts</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="findings">
+  <div class="wrap findings">
+    <div>
+      <div class="section-head">
+        <h2>What the letter found</h2>
+      </div>
+      <div class="prose">
+        <p>CMS removed the measures citing, among other reasons, consistently high performance and limited variation across contracts. Two of them have separate Part C and Part D components, so 13 components leave the rating algorithm. The letter tests that rationale against contract-level performance data and estimates the payment consequences.</p>
+        <p>A measure is classified as topped out when its bottom-decile contract scores at least 90 on a 0 to 100 attainment scale. By that standard, 5 of the 13 removed components were topped out, compared with none of the 30 retained measures.</p>
+        <p>Recomputing the 2026 Star Ratings without the removed components lowers the overall rating of 35.1% of the 425 contracts analyzed. Thirty-three contracts covering 2.6 million enrollees fall below the 4-star threshold for quality bonus payments (QBPs), and 6 contracts rise above it.</p>
+      </div>
+      <dl class="keys">
+        <div><dt>5 of 13</dt><dd>removed components topped out, compared with 0 of 30 retained measures</dd></div>
+        <div><dt>33 and 6</dt><dd>contracts that lose and gain QBP eligibility</dd></div>
+        <div><dt>$2.09 billion</dt><dd>estimated net reduction in annual QBPs</dd></div>
+        <div><dt>13.9%</dt><dd>of the $15.1 billion baseline QBP pool</dd></div>
+      </dl>
+    </div>
+    <figure>
+      <img src="outputs/figure_dot_plot.png" width="2224" height="2908" loading="lazy"
+           alt="Dot plot of 43 Star Ratings measures ordered by the attainment of the 10th-percentile contract. Removed measures are orange and retained measures are blue. Five removed components lie in the topped-out region at 90 or above; no retained measure does.">
+      <figcaption>Figure from the article, reproduced by notebook 02. Each row is a measure; the solid dot marks the 10th-percentile contract and the small dot the 90th. Orange marks removed components, blue retained measures. The dotted line at 90 bounds the topped-out region.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="explorer">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Explore contracts and parent organizations</h2>
+      <p>Every MA contract in the 2026 Star Ratings, with its simulated overall rating before and after the removed components are dropped and the resulting change in its estimated QBP. Choose a parent organization, state, plan type, or QBP outcome to compare a group of contracts with the rest of the analytic cohort, then download the rows you see.</p>
+    </div>
+
+    <form class="filters" id="filters" role="search" aria-label="Filter contracts" onsubmit="return false">
+      <div class="field grow">
+        <label for="f-q">Search</label>
+        <input type="search" id="f-q" placeholder="Contract ID or name" autocomplete="off">
+      </div>
+      <div class="field parent">
+        <label for="f-parent">Parent organization</label>
+        <select id="f-parent"><option value="">All organizations</option></select>
+      </div>
+      <div class="field">
+        <label for="f-state">State served</label>
+        <select id="f-state"><option value="">All states</option></select>
+      </div>
+      <div class="field">
+        <label for="f-plan">Plan type</label>
+        <select id="f-plan">
+          <option value="">All types</option>
+          <option value="HMO">HMO</option>
+          <option value="PPO">PPO</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-qbp">QBP outcome</label>
+        <select id="f-qbp">
+          <option value="">All outcomes</option>
+          <option value="Lose">Lose eligibility</option>
+          <option value="Gain">Gain eligibility</option>
+          <option value="Retain">Retain eligibility</option>
+          <option value="Never">Never eligible</option>
+        </select>
+      </div>
+      <label class="check"><input type="checkbox" id="f-cohort" checked> Analytic cohort only</label>
+      <div class="filter-actions">
+        <button type="button" class="btn btn-quiet" id="reset">Clear filters</button>
+      </div>
+    </form>
+
+    <div class="compare-wrap">
+      <div class="card">
+        <h3 id="cmp-title">All contracts in the analytic cohort</h3>
+        <p class="sub" id="cmp-sub">425 MA prescription drug contracts with a 2026 overall rating</p>
+        <div id="cmp"></div>
+      </div>
+      <div class="card">
+        <h3>Overall rating before and after removal</h3>
+        <p class="sub">Share of contracts at each rating. Contracts rated 4 stars or higher receive a QBP.</p>
+        <div class="legend" aria-hidden="true">
+          <span><i style="background:var(--before)"></i>Before removal</span>
+          <span><i style="background:var(--after)"></i>After removal</span>
+        </div>
+        <div class="panels" id="panels"></div>
+      </div>
+    </div>
+
+    <div class="results-bar">
+      <div class="count" id="count" aria-live="polite"></div>
+      <button type="button" class="btn btn-solid" id="export">Download these rows (CSV)</button>
+    </div>
+    <div class="table-scroll">
+      <table class="contracts" id="table">
+        <caption class="visually-hidden">Contracts matching the filters. Select a contract ID to show its details.</caption>
+        <thead><tr id="thead"></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="pager" id="pager"></div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap about">
+    <div>
+      <h3>What the code and data are for</h3>
+      <p>The <a href="https://github.com/derektlakephd-prog/ma-star-ratings-2026">repository</a> reproduces every number in the letter from public CMS files and lets others reuse the contract-level results.</p>
+      <ul>
+        <li>Two Jupyter notebooks replicate the 2026 Star Ratings, remove the 13 components, price QBP eligibility, and check each published value.</li>
+        <li><code>data/derived/contract_level_results.csv</code> holds ratings, enrollment, and QBP estimates for all 769 contracts in the 2026 Star Ratings. This page is built from the same file and lists the 720 MA contracts among them.</li>
+        <li>A data dictionary, glossary, measure reference, and source list document each step.</li>
+      </ul>
+      <p>For custom analyses or alternative removal scenarios, contact the author.</p>
+    </div>
+    <div>
+      <h3>Notes on the estimates</h3>
+      <ul>
+        <li>The final rule applies the removals to future Star Ratings years. These estimates apply them to the 2026 ratings to isolate their effect, holding measure stars and the categorical adjustment index fixed and recalibrating reward factor thresholds.</li>
+        <li>QBP values are annual 2026 amounts from county benchmark rates and May 2026 enrollment.</li>
+        <li>Simulated baseline ratings match the CMS-published rating for 431 of the 436 non-disaster contracts that both CMS and the simulation rate.</li>
+        <li>The 64 contracts affected by the CMS disaster policy are excluded because their measure-level adjustments cannot be reproduced from public data.</li>
+        <li>The estimates do not incorporate the ratings CMS recalculated in June 2026 after a court ruling on certain 2026 measures; one cohort contract was recalculated above the bonus threshold.</li>
+        <li>These are research estimates, not official CMS ratings or payment determinations. CMS did not review or endorse this work.</li>
+      </ul>
+    </div>
+    <div>
+      <h3 id="author">About the author</h3>
+      <p>Derek T. Lake, PhD, is a health economist and health services researcher. He is Associate Staff and Director of Research for Hospital at Home in the Center for Value-Based Care Research at Cleveland Clinic and an Adjunct Research Associate in the Department of Health Services, Policy &amp; Practice at the Brown University School of Public Health. His research examines Medicare Advantage, insurer-provider integration, and the substitution of care across hospital, post-acute, and home settings, using Medicare claims and quasi-experimental methods. He received his PhD in health services research from Brown University.</p>
+      <p><a href="mailto:derek.t.lake.phd@gmail.com">derek.t.lake.phd@gmail.com</a><br>ORCID <a href="https://orcid.org/0000-0002-6250-8737">0000-0002-6250-8737</a></p>
+      <h3 style="margin-top:24px">How to cite</h3>
+      <div class="citebox" id="citation">Lake DT, Civelek Y, Bond AM, Khullar D. Characteristics and financial implications of measures removed from Medicare Advantage star ratings. <i>JAMA Netw Open</i>. 2026;9(10):e2640240. doi:10.1001/jamanetworkopen.2026.40240</div>
+      <button type="button" class="btn btn-quiet" id="copy-cite">Copy citation</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Code is licensed under the Apache License 2.0. Derived data, figures, and documentation are licensed under CC BY 4.0; please cite the article. Raw inputs are public CMS files. Copyright 2026 Derek T. Lake. This page uses Google Analytics to count visits.</p>
+    <p>Funding for the article: Arnold Ventures and The Physicians Foundation Center for the Study of Physician Practice and Leadership at Weill Cornell Medicine. The funders had no role in the work.</p>
+  </div>
+</footer>
+
+<div class="tooltip" id="tip" aria-hidden="true"></div>
+
+<script src="site/explorer_data.js"></script>
+<script>
+(function () {
+  "use strict";
+  var DATA = window.EXPLORER_DATA;
+  if (!DATA) { document.getElementById("count").textContent = "The data file site/explorer_data.js did not load."; return; }
+  var ALL = DATA.contracts;
+  var COHORT = ALL.filter(function (c) { return c.cohort; });
+  var RATINGS = [1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+  var PAGE = 25;
+  var QBP_LABEL = { Lose: "Lose", Gain: "Gain", Retain: "Retain", Never: "Never" };
+
+  var state = { q: "", parent: "", st: "", plan: "", qbp: "", cohort: true, sort: "id", dir: 1, page: 0, open: {} };
+
+  // ---------- formatting ----------
+  function fmtInt(n) { return n == null ? "" : Math.round(n).toLocaleString("en-US"); }
+  function fmtRating(r) { return r == null ? "" : r.toFixed(1); }
+  function fmtMoney(x, signed) {
+    if (x == null) return "";
+    var a = Math.abs(x), s = x < 0 ? "-" : (signed && x > 0 ? "+" : "");
+    if (a >= 1e9) return s + "$" + (a / 1e9).toFixed(2) + " billion";
+    if (a >= 1e6) return s + "$" + (a / 1e6).toFixed(1) + " million";
+    if (a === 0) return "$0";
+    return s + "$" + Math.round(a).toLocaleString("en-US");
+  }
+  function fmtPct(x, d) { return (x * 100).toFixed(d == null ? 1 : d) + "%"; }
+  function change(c) { return c.base != null && c.proj != null ? Math.round((c.proj - c.base) * 10) / 10 : null; }
+  function el(tag, attrs, text) {
+    var e = document.createElement(tag);
+    if (attrs) for (var k in attrs) { if (k === "class") e.className = attrs[k]; else e.setAttribute(k, attrs[k]); }
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  // ---------- filter options ----------
+  var parents = {}, states = {};
+  ALL.forEach(function (c) {
+    parents[c.parent] = (parents[c.parent] || 0) + 1;
+    c.states.forEach(function (s) { states[s] = 1; });
+    c._search = (c.id + " " + (c.name || "") + " " + (c.contract || "") + " " + c.parent).toLowerCase();
+  });
+  var selParent = document.getElementById("f-parent");
+  Object.keys(parents).sort(function (a, b) { return a.localeCompare(b); }).forEach(function (p) {
+    selParent.appendChild(el("option", { value: p }, p));
+  });
+  var selState = document.getElementById("f-state");
+  Object.keys(states).sort().forEach(function (s) { selState.appendChild(el("option", { value: s }, s)); });
+
+  // ---------- filtering ----------
+  function isFiltered() { return !!(state.q || state.parent || state.st || state.plan || state.qbp); }
+  function matches(c) {
+    if (state.cohort && !c.cohort) return false;
+    if (state.parent && c.parent !== state.parent) return false;
+    if (state.st && c.states.indexOf(state.st) < 0) return false;
+    if (state.plan && c.plan !== state.plan) return false;
+    if (state.qbp && c.qbp !== state.qbp) return false;
+    if (state.q && c._search.indexOf(state.q.toLowerCase()) < 0) return false;
+    return true;
+  }
+
+  var COLUMNS = [
+    { key: "id", label: "Contract", get: function (c) { return c.id; } },
+    { key: "name", label: "Marketing name", get: function (c) { return (c.name || "").toLowerCase(); } },
+    { key: "parent", label: "Parent organization", get: function (c) { return c.parent.toLowerCase(); } },
+    { key: "enr", label: "Enrollees", r: true, get: function (c) { return c.enr; } },
+    { key: "base", label: "Rating before", r: true, get: function (c) { return c.base; } },
+    { key: "proj", label: "Rating after", r: true, get: function (c) { return c.proj; } },
+    { key: "chg", label: "Change", r: true, get: change },
+    { key: "qbp", label: "QBP outcome", get: function (c) { return c.qbp || ("~" + c.reason); } },
+    { key: "net", label: "Net QBP change", r: true, get: function (c) { return c.netQbp; } }
+  ];
+
+  function sorted(rows) {
+    var col = COLUMNS.filter(function (c) { return c.key === state.sort; })[0];
+    return rows.slice().sort(function (a, b) {
+      var x = col.get(a), y = col.get(b);
+      if (x == null && y == null) return a.id < b.id ? -1 : 1;
+      if (x == null) return 1;
+      if (y == null) return -1;
+      if (x < y) return -state.dir;
+      if (x > y) return state.dir;
+      return a.id < b.id ? -1 : 1;
+    });
+  }
+
+  // ---------- comparison summary ----------
+  function summarize(rows) {
+    var n = rows.length, enr = 0, sb = 0, sp = 0, down = 0, same = 0, up = 0, lose = 0, gain = 0, bq = 0, nq = 0;
+    rows.forEach(function (c) {
+      enr += c.enr || 0; sb += c.base; sp += c.proj;
+      var d = change(c); if (d < 0) down++; else if (d > 0) up++; else same++;
+      if (c.qbp === "Lose") lose++; if (c.qbp === "Gain") gain++;
+      bq += c.baseQbp || 0; nq += c.netQbp || 0;
+    });
+    return { n: n, enr: enr, mb: n ? sb / n : null, mp: n ? sp / n : null, down: down, same: same, up: up,
+             lose: lose, gain: gain, bq: bq, nq: nq };
+  }
+
+  function renderCompare(selRows) {
+    var host = document.getElementById("cmp");
+    host.textContent = "";
+    var filtered = isFiltered();
+    var title = document.getElementById("cmp-title"), sub = document.getElementById("cmp-sub");
+    var cols;
+    if (!filtered) {
+      title.textContent = "All contracts in the analytic cohort";
+      sub.textContent = "425 MA prescription drug contracts with a 2026 overall rating";
+      cols = [{ label: "All 425", s: summarize(COHORT) }];
+    } else {
+      var ids = {}; selRows.forEach(function (c) { ids[c.id] = 1; });
+      var rest = COHORT.filter(function (c) { return !ids[c.id]; });
+      var parts = [];
+      if (state.parent) parts.push(state.parent);
+      if (state.st) parts.push("serving " + state.st);
+      if (state.plan) parts.push(state.plan);
+      if (state.qbp) parts.push("QBP outcome " + QBP_LABEL[state.qbp].toLowerCase());
+      if (state.q) parts.push("matching \u201C" + state.q + "\u201D");
+      title.textContent = parts.length ? parts.join(", ") : "Selected contracts";
+      sub.textContent = "Cohort contracts matching the filters, compared with all other cohort contracts";
+      cols = [{ label: "Selection", s: summarize(selRows) }, { label: "Rest of cohort", s: summarize(rest) }];
+    }
+    var t = el("table", { class: "compare" });
+    var thead = el("thead"), hr = el("tr");
+    hr.appendChild(el("th", { scope: "col" }, ""));
+    cols.forEach(function (c) { hr.appendChild(el("th", { scope: "col" }, c.label)); });
+    thead.appendChild(hr); t.appendChild(thead);
+    var tb = el("tbody");
+    var lines = [
+      ["Contracts", function (s) { return fmtInt(s.n); }],
+      ["Enrollees, May 2026", function (s) { return fmtInt(s.enr); }],
+      ["Mean overall rating, before and after", function (s) { return s.n ? s.mb.toFixed(2) + " to " + s.mp.toFixed(2) : ""; }],
+      ["Rating lower, unchanged, higher", function (s) { return s.n ? s.down + ", " + s.same + ", " + s.up : ""; }],
+      ["Contracts losing and gaining QBP", function (s) { return s.n ? s.lose + " and " + s.gain : ""; }],
+      ["Baseline annual QBP", function (s) { return s.n ? fmtMoney(s.bq) : ""; }],
+      ["Net QBP change (share of own baseline)", function (s) {
+        if (!s.n) return "";
+        return fmtMoney(s.nq, true) + (s.bq > 0 ? " (" + (s.nq >= 0 ? "+" : "") + (100 * s.nq / s.bq).toFixed(1) + "%)" : "");
+      }]
+    ];
+    lines.forEach(function (ln) {
+      var tr = el("tr");
+      tr.appendChild(el("th", { scope: "row" }, ln[0]));
+      cols.forEach(function (c) { tr.appendChild(el("td", { class: "num" }, ln[1](c.s))); });
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb);
+    host.appendChild(t);
+    if (filtered && selRows.length === 0) {
+      host.appendChild(el("p", { class: "note" }, "No analytic cohort contracts match these filters. Clear a filter to compare."));
+    }
+    if (filtered) {
+      var saved = state.cohort; state.cohort = false;
+      var out = ALL.filter(function (c) { return !c.cohort && c.type !== "PDP" && matches(c); });
+      state.cohort = saved;
+      if (out.length) {
+        var oe = out.reduce(function (a, c) { return a + (c.enr || 0); }, 0);
+        host.appendChild(el("p", { class: "note" }, fmtInt(out.length) + " other MA " + (out.length === 1 ? "contract matches" : "contracts match") +
+          " these filters but " + (out.length === 1 ? "is" : "are") + " outside the analytic cohort (" + fmtInt(oe) +
+          " enrollees), most often because of the disaster policy or a missing overall rating. " +
+          (state.cohort ? "Clear \u201CAnalytic cohort only\u201D to list them." : "They are listed below but not counted here.")));
+      }
+    }
+  }
+
+  // ---------- chart ----------
+  var SVGNS = "http://www.w3.org/2000/svg";
+  function svg(tag, attrs) {
+    var e = document.createElementNS(SVGNS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+  function topRoundedBar(x, y, w, h, r) {
+    if (h <= 0) return "";
+    r = Math.min(r, w / 2, h);
+    return "M" + x + "," + (y + h) + "V" + (y + r) + "Q" + x + "," + y + " " + (x + r) + "," + y +
+           "H" + (x + w - r) + "Q" + (x + w) + "," + y + " " + (x + w) + "," + (y + r) + "V" + (y + h) + "Z";
+  }
+  var tip = document.getElementById("tip");
+  function showTip(evt, panelName, rating, cb, ca, n) {
+    tip.textContent = "";
+    tip.appendChild(el("div", { class: "t-head" }, rating.toFixed(1) + " stars, " + panelName.toLowerCase()));
+    [["Before removal", cb, "var(--before)"], ["After removal", ca, "var(--after)"]].forEach(function (r) {
+      var row = el("div", { class: "t-row" });
+      var key = el("i", { class: "t-key" }); key.style.background = r[2];
+      row.appendChild(key);
+      row.appendChild(el("b", null, (n ? fmtPct(r[1] / n) : "0%")));
+      row.appendChild(el("span", null, fmtInt(r[1]) + " " + (r[1] === 1 ? "contract" : "contracts") + ", " + r[0].toLowerCase()));
+      tip.appendChild(row);
+    });
+    var box = evt.currentTarget.getBoundingClientRect();
+    var x = evt.clientX != null ? evt.clientX : box.left + box.width / 2;
+    var y = evt.clientY != null ? evt.clientY : box.top;
+    tip.classList.add("on");
+    var tw = tip.offsetWidth, th = tip.offsetHeight;
+    var left = Math.min(window.innerWidth - tw - 8, Math.max(8, x + 14));
+    var top = y - th - 12; if (top < 8) top = y + 18;
+    tip.style.left = left + "px"; tip.style.top = top + "px";
+  }
+  function hideTip() { tip.classList.remove("on"); }
+
+  function drawPanel(host, name, rows) {
+    var wrap = el("div", { class: "panel" });
+    wrap.appendChild(el("h4", null, name + " (" + fmtInt(rows.length) + ")"));
+    host.appendChild(wrap);
+    if (!rows.length) { wrap.appendChild(el("p", { class: "empty" }, "No cohort contracts.")); return; }
+    var cb = {}, ca = {};
+    RATINGS.forEach(function (r) { cb[r] = 0; ca[r] = 0; });
+    rows.forEach(function (c) { cb[c.base] = (cb[c.base] || 0) + 1; ca[c.proj] = (ca[c.proj] || 0) + 1; });
+    var n = rows.length;
+    var maxShare = 0;
+    RATINGS.forEach(function (r) { maxShare = Math.max(maxShare, cb[r] / n, ca[r] / n); });
+    var step = maxShare > 0.5 ? 0.2 : 0.1;
+    var yMax = Math.max(step, Math.ceil(maxShare / step - 1e-9) * step);
+    var W = 460, H = 180, m = { l: 36, r: 6, t: 20, b: 24 };
+    var pw = W - m.l - m.r, ph = H - m.t - m.b;
+    var s = svg("svg", { viewBox: "0 0 " + W + " " + H, "aria-hidden": "true", focusable: "false" });
+    var grid = svg("g", { class: "grid" }), axis = svg("g", { class: "axis" });
+    for (var v = 0; v <= yMax + 1e-9; v += step) {
+      var yy = m.t + ph - (v / yMax) * ph;
+      if (v > 0) grid.appendChild(svg("line", { x1: m.l, x2: W - m.r, y1: yy, y2: yy }));
+      var tl = svg("text", { x: m.l - 6, y: yy + 3.5, "text-anchor": "end" }); tl.textContent = Math.round(v * 100) + "%";
+      axis.appendChild(tl);
+    }
+    var band = m.l + (5 / RATINGS.length) * pw;
+    s.appendChild(svg("rect", { class: "band", x: band, y: m.t, width: W - m.r - band, height: ph }));
+    var bl = svg("text", { class: "band-label", x: band + 6, y: m.t - 7 }); bl.textContent = "QBP eligible";
+    s.appendChild(bl);
+    s.appendChild(grid);
+    var slot = pw / RATINGS.length, bw = Math.min(16, (slot - 10) / 2);
+    RATINGS.forEach(function (r, i) {
+      var x0 = m.l + i * slot;
+      var g = svg("g", { class: "col" });
+      g.appendChild(svg("rect", { class: "hit", x: x0 + 1, y: m.t, width: slot - 2, height: ph, rx: 4 }));
+      var cx = x0 + slot / 2;
+      var hb = (cb[r] / n / yMax) * ph, ha = (ca[r] / n / yMax) * ph;
+      if (hb > 0) g.appendChild(svg("path", { class: "bar-before", d: topRoundedBar(cx - bw - 1, m.t + ph - hb, bw, hb, 3) }));
+      if (ha > 0) g.appendChild(svg("path", { class: "bar-after", d: topRoundedBar(cx + 1, m.t + ph - ha, bw, ha, 3) }));
+      var lab = svg("text", { x: cx, y: H - 8, "text-anchor": "middle" }); lab.textContent = r.toFixed(1);
+      axis.appendChild(lab);
+      g.addEventListener("pointermove", function (e) { showTip(e, name, r, cb[r], ca[r], n); });
+      g.addEventListener("pointerleave", hideTip);
+      s.appendChild(g);
+    });
+    s.appendChild(svg("line", { class: "baseline", x1: m.l, x2: W - m.r, y1: m.t + ph, y2: m.t + ph }));
+    s.appendChild(axis);
+    wrap.appendChild(s);
+    var vw = el("div", { class: "visually-hidden" });
+    var vt = el("table");
+    vt.appendChild(el("caption", null, name + ": number of contracts at each overall rating before and after removal"));
+    var vh = el("tr");
+    ["Rating", "Before removal", "After removal"].forEach(function (x) { vh.appendChild(el("th", { scope: "col" }, x)); });
+    vt.appendChild(vh);
+    RATINGS.forEach(function (r) {
+      var tr = el("tr");
+      tr.appendChild(el("th", { scope: "row" }, r.toFixed(1)));
+      tr.appendChild(el("td", null, String(cb[r])));
+      tr.appendChild(el("td", null, String(ca[r])));
+      vt.appendChild(tr);
+    });
+    vw.appendChild(vt);
+    wrap.appendChild(vw);
+  }
+
+  function renderChart(selRows) {
+    var host = document.getElementById("panels");
+    host.textContent = "";
+    if (!isFiltered()) { drawPanel(host, "All cohort contracts", COHORT); return; }
+    var ids = {}; selRows.forEach(function (c) { ids[c.id] = 1; });
+    drawPanel(host, "Selection", selRows);
+    drawPanel(host, "Rest of cohort", COHORT.filter(function (c) { return !ids[c.id]; }));
+  }
+
+  // ---------- table ----------
+  function renderHead() {
+    var tr = document.getElementById("thead");
+    tr.textContent = "";
+    COLUMNS.forEach(function (col) {
+      var th = el("th", { scope: "col", class: col.r ? "r" : "" });
+      var active = state.sort === col.key;
+      th.setAttribute("aria-sort", active ? (state.dir > 0 ? "ascending" : "descending") : "none");
+      var b = el("button", { type: "button", class: "sort" });
+      b.appendChild(document.createTextNode(col.label));
+      b.appendChild(el("span", { class: "dir", "aria-hidden": "true" }, active ? (state.dir > 0 ? "▴" : "▾") : ""));
+      b.addEventListener("click", function () {
+        if (state.sort === col.key) state.dir = -state.dir;
+        else { state.sort = col.key; state.dir = col.r ? -1 : 1; }
+        state.page = 0; render();
+      });
+      th.appendChild(b);
+      tr.appendChild(th);
+    });
+  }
+
+  function qbpCell(c) {
+    if (!c.cohort) return el("span", { class: "pill excluded", title: c.reason }, "Excluded");
+    var cls = c.qbp === "Lose" ? "pill lose" : c.qbp === "Gain" ? "pill gain" : "pill";
+    return el("span", { class: cls }, QBP_LABEL[c.qbp]);
+  }
+
+  function detailRow(c) {
+    var tr = el("tr", { class: "detail" });
+    var td = el("td", { colspan: String(COLUMNS.length) });
+    var grid = el("div", { class: "detail-grid" });
+
+    var a = el("div");
+    a.appendChild(el("h5", null, "Contract"));
+    var dl = el("dl");
+    [["Contract name", c.contract], ["Parent organization", c.parent], ["Organization type", c.orgType],
+     ["Rating type", c.type], ["Plan type", c.plan || "Not classified"], ["Special needs plans", c.snp ? "Yes" : "No"],
+     ["States served", c.states.length ? c.states.join(", ") : "None listed"],
+     ["Analytic cohort", c.cohort ? "Included" : (c.reason === "No overall rating" && c.cms != null)
+       ? "Excluded: CMS published an overall rating, but the simulation does not rate this contract (stars on fewer than half of the Part C measures it counts)"
+       : "Excluded: " + c.reason.toLowerCase()]]
+      .forEach(function (p) { dl.appendChild(el("dt", null, p[0])); dl.appendChild(el("dd", null, p[1] || "")); });
+    a.appendChild(dl);
+    grid.appendChild(a);
+
+    var b = el("div");
+    b.appendChild(el("h5", null, "Ratings"));
+    var t = el("table", { class: "mini" });
+    var h = el("tr"); ["", "Part C", "Part D", "Overall"].forEach(function (x) { h.appendChild(el("th", { scope: "col" }, x)); });
+    var th = el("thead"); th.appendChild(h); t.appendChild(th);
+    var tb = el("tbody");
+    [["Published by CMS", c.cmsC, c.cmsD, c.cms], ["Simulated, before", c.baseC, c.baseD, c.base],
+     ["Simulated, after", c.projC, c.projD, c.proj]].forEach(function (r) {
+      var row = el("tr");
+      row.appendChild(el("th", { scope: "row" }, r[0]));
+      for (var i = 1; i < 4; i++) row.appendChild(el("td", null, r[i] == null ? "NA" : fmtRating(r[i])));
+      tb.appendChild(row);
+    });
+    t.appendChild(tb); b.appendChild(t);
+    b.appendChild(el("h5", null, "Quality bonus payment"));
+    var dl2 = el("dl");
+    [["Enrollees, May 2026", c.enr == null ? "Not listed" : fmtInt(c.enr)],
+     ["Annual QBP at 4 stars or higher", c.qbpValue == null ? "NA" : fmtMoney(c.qbpValue)],
+     ["QBP outcome", c.cohort ? QBP_LABEL[c.qbp] : "Not estimated"],
+     ["Net QBP change", c.cohort ? fmtMoney(c.netQbp, true) : "Not estimated"]]
+      .forEach(function (p) { dl2.appendChild(el("dt", null, p[0])); dl2.appendChild(el("dd", null, p[1])); });
+    b.appendChild(dl2);
+    grid.appendChild(b);
+
+    var d = el("div");
+    d.appendChild(el("h5", null, "Stars on the 13 removed components"));
+    var ul = el("ul", { class: "stars-list" });
+    DATA.removedMeasures.forEach(function (m, i) {
+      var li = el("li");
+      li.appendChild(el("span", { class: "code" }, m.code));
+      li.appendChild(el("span", null, m.name));
+      var v = c.removed[i];
+      li.appendChild(el("span", { class: v == null ? "s muted" : "s" }, v == null ? "NA" : v + " of 5"));
+      ul.appendChild(li);
+    });
+    d.appendChild(ul);
+    grid.appendChild(d);
+
+    td.appendChild(grid);
+    tr.appendChild(td);
+    return tr;
+  }
+
+  function renderTable(rows) {
+    var tbody = document.getElementById("tbody");
+    tbody.textContent = "";
+    var pages = Math.max(1, Math.ceil(rows.length / PAGE));
+    if (state.page >= pages) state.page = pages - 1;
+    var slice = rows.slice(state.page * PAGE, state.page * PAGE + PAGE);
+    if (!slice.length) {
+      var tr0 = el("tr"), td0 = el("td", { colspan: String(COLUMNS.length), class: "empty" },
+        "No contracts match these filters. Clear a filter or turn off “Analytic cohort only.”");
+      tr0.appendChild(td0); tbody.appendChild(tr0);
+    }
+    slice.forEach(function (c) {
+      var open = !!state.open[c.id];
+      var tr = el("tr", { class: open ? "is-open" : "" });
+      var td = el("td");
+      var btn = el("button", { type: "button", class: "row-toggle", "aria-expanded": String(open), "aria-label": c.id + ", show details" });
+      btn.appendChild(el("span", { class: "chev", "aria-hidden": "true" }, "›"));
+      btn.appendChild(document.createTextNode(c.id));
+      btn.addEventListener("click", function () { state.open[c.id] = !state.open[c.id]; renderTable(rows); });
+      td.appendChild(btn); tr.appendChild(td);
+      tr.appendChild(el("td", { class: "pname" }, c.name || ""));
+      tr.appendChild(el("td", { class: "pname" }, c.parent));
+      tr.appendChild(el("td", { class: "r" }, c.enr == null ? "" : fmtInt(c.enr)));
+      tr.appendChild(el("td", { class: "r" }, fmtRating(c.base)));
+      tr.appendChild(el("td", { class: "r" }, fmtRating(c.proj)));
+      var d = c.cohort ? change(c) : null;
+      tr.appendChild(el("td", { class: "r" + (d < 0 ? " delta-down" : d > 0 ? " delta-up" : "") },
+        d == null ? "" : d === 0 ? "0.0" : (d > 0 ? "+" : "") + d.toFixed(1)));
+      var q = el("td"); q.appendChild(qbpCell(c)); tr.appendChild(q);
+      tr.appendChild(el("td", { class: "r" }, c.cohort ? fmtMoney(c.netQbp, true) : ""));
+      tbody.appendChild(tr);
+      if (open) tbody.appendChild(detailRow(c));
+    });
+
+    var pager = document.getElementById("pager");
+    pager.textContent = "";
+    if (pages > 1) {
+      var prev = el("button", { type: "button", class: "btn btn-quiet" }, "Previous");
+      var next = el("button", { type: "button", class: "btn btn-quiet" }, "Next");
+      if (state.page === 0) prev.disabled = true;
+      if (state.page >= pages - 1) next.disabled = true;
+      prev.addEventListener("click", function () { state.page--; renderTable(rows); });
+      next.addEventListener("click", function () { state.page++; renderTable(rows); });
+      pager.appendChild(prev);
+      pager.appendChild(el("span", null, "Page " + (state.page + 1) + " of " + pages));
+      pager.appendChild(next);
+    }
+  }
+
+  // ---------- CSV export ----------
+  function csvCell(v) {
+    if (v == null) return "";
+    var s = String(v);
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+  function exportCsv(rows) {
+    var head = ["Contract_ID", "Marketing_Name", "Contract_Name", "Parent_Organization", "Organization_Type", "Contract_Type",
+      "Plan_Type", "Is_SNP", "States_Served", "Enrollment", "CMS_PartC", "CMS_PartD", "CMS_Overall",
+      "Baseline_PartC", "Baseline_PartD", "Baseline_Overall", "Projected_PartC", "Projected_PartD", "Projected_Overall",
+      "Rating_Change", "QBP_Change", "Annual_QBP_Value", "Baseline_QBP", "Net_QBP_Change", "In_Analytic_Cohort",
+      "Exclusion_Reason"].concat(DATA.removedMeasures.map(function (m) { return "Stars_" + m.code; }));
+    var lines = [head.join(",")];
+    rows.forEach(function (c) {
+      function rt(x) { return x == null ? null : x.toFixed(1); }
+      function tf(x) { return x ? "True" : "False"; }
+      var r = [c.id, c.name, c.contract, c.parent, c.orgType, c.type, c.plan, tf(c.snp), c.states.join(" "), c.enr,
+        rt(c.cmsC), rt(c.cmsD), rt(c.cms), rt(c.baseC), rt(c.baseD), rt(c.base), rt(c.projC), rt(c.projD), rt(c.proj),
+        c.cohort ? rt(change(c)) : null, c.cohort ? c.qbp : null, c.qbpValue, c.cohort ? c.baseQbp : null,
+        c.cohort ? c.netQbp : null, tf(c.cohort), c.reason].concat(c.removed);
+      lines.push(r.map(csvCell).join(","));
+    });
+    var blob = new Blob([lines.join("\r\n") + "\r\n"], { type: "text/csv;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "ma_star_ratings_measure_removal_contracts.csv";
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 0);
+  }
+
+  // ---------- URL state ----------
+  function writeHash() {
+    var p = new URLSearchParams();
+    if (state.q) p.set("q", state.q);
+    if (state.parent) p.set("parent", state.parent);
+    if (state.st) p.set("state", state.st);
+    if (state.plan) p.set("plan", state.plan);
+    if (state.qbp) p.set("qbp", state.qbp);
+    if (!state.cohort) p.set("cohort", "all");
+    var h = p.toString();
+    var url = location.pathname + location.search + (h ? "#" + h : "");
+    if (h || /#.+=/.test(location.hash)) history.replaceState(null, "", url);
+  }
+  function readHash() {
+    if (!/=/.test(location.hash)) return;
+    var p = new URLSearchParams(location.hash.slice(1));
+    state.q = p.get("q") || ""; state.parent = p.get("parent") || ""; state.st = p.get("state") || "";
+    state.plan = p.get("plan") || ""; state.qbp = p.get("qbp") || ""; state.cohort = p.get("cohort") !== "all";
+    if (state.parent && !parents[state.parent]) state.parent = "";
+  }
+
+  // ---------- wiring ----------
+  var fQ = document.getElementById("f-q"), fPlan = document.getElementById("f-plan"),
+      fQbp = document.getElementById("f-qbp"), fCohort = document.getElementById("f-cohort");
+  function syncControls() {
+    fQ.value = state.q; selParent.value = state.parent; selState.value = state.st;
+    fPlan.value = state.plan; fQbp.value = state.qbp; fCohort.checked = state.cohort;
+  }
+  var current = [];
+  function render() {
+    var rows = ALL.filter(matches);
+    current = sorted(rows);
+    var sel = rows.filter(function (c) { return c.cohort; });
+    renderCompare(sel);
+    renderChart(sel);
+    renderHead();
+    renderTable(current);
+    document.getElementById("count").textContent = fmtInt(rows.length) + (state.cohort
+      ? (rows.length === 1 ? " contract in the analytic cohort" : " contracts in the analytic cohort")
+      : (rows.length === 1 ? " MA contract in the 2026 Star Ratings" : " MA contracts in the 2026 Star Ratings"));
+    writeHash();
+  }
+  var timer;
+  fQ.addEventListener("input", function () { clearTimeout(timer); timer = setTimeout(function () { state.q = fQ.value.trim(); state.page = 0; render(); }, 120); });
+  selParent.addEventListener("change", function () { state.parent = selParent.value; state.page = 0; render(); });
+  selState.addEventListener("change", function () { state.st = selState.value; state.page = 0; render(); });
+  fPlan.addEventListener("change", function () { state.plan = fPlan.value; state.page = 0; render(); });
+  fQbp.addEventListener("change", function () { state.qbp = fQbp.value; state.page = 0; render(); });
+  fCohort.addEventListener("change", function () { state.cohort = fCohort.checked; state.page = 0; render(); });
+  document.getElementById("reset").addEventListener("click", function () {
+    state.q = state.parent = state.st = state.plan = state.qbp = ""; state.cohort = true; state.page = 0; state.open = {};
+    syncControls(); render();
+  });
+  document.getElementById("export").addEventListener("click", function () { exportCsv(current); });
+  document.getElementById("copy-cite").addEventListener("click", function () {
+    var b = this, text = document.getElementById("citation").textContent;
+    function done() { b.textContent = "Citation copied"; setTimeout(function () { b.textContent = "Copy citation"; }, 1800); }
+    if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, function () {});
+  });
+  window.addEventListener("scroll", hideTip, { passive: true });
+
+  readHash();
+  syncControls();
+  render();
+})();
+</script>
+</body>
+</html>

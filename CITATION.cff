@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use this code or its data, please cite the article listed under preferred-citation."
+title: "Code and data for: Characteristics and Financial Implications of Measures Removed From Medicare Advantage Star Ratings"
+type: software
+authors:
+  - family-names: Lake
+    given-names: Derek T.
+    orcid: "https://orcid.org/0000-0002-6250-8737"
+    email: derek.t.lake.phd@gmail.com
+repository-code: "https://github.com/derektlakephd-prog/ma-star-ratings-2026"
+license:
+  - Apache-2.0
+  - CC-BY-4.0
+version: 1.0.0
+date-released: "2026-10-23"
+keywords:
+  - Medicare Advantage
+  - Star Ratings
+  - quality bonus payments
+  - quality measurement
+  - health policy
+preferred-citation:
+  type: article
+  authors:
+    - family-names: Lake
+      given-names: Derek T.
+      orcid: "https://orcid.org/0000-0002-6250-8737"
+    - family-names: Civelek
+      given-names: Yasin
+    - family-names: Bond
+      given-names: Amelia M.
+    - family-names: Khullar
+      given-names: Dhruv
+  title: "Characteristics and Financial Implications of Measures Removed From Medicare Advantage Star Ratings"
+  journal: "JAMA Network Open"
+  year: 2026
+  volume: 9
+  issue: 10
+  start: "e2640240"
+  doi: "10.1001/jamanetworkopen.2026.40240"
+  url: "https://doi.org/10.1001/jamanetworkopen.2026.40240"
